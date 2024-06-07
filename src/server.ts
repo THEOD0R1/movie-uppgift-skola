@@ -2,6 +2,8 @@ import Stripe from "stripe";
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+// import * as movieData from "./data/data.json";
+const data = require("./data/data.json");
 dotenv.config();
 
 const app = express();
@@ -39,6 +41,10 @@ app.post("/create-payment-intent", async (req, res) => {
   res.send({
     clientSecret: paymentIntent.client_secret,
   });
+});
+
+app.get("/movies", (req, res) => {
+  res.send(JSON.stringify(data));
 });
 
 app.listen(PORT, () => console.log(`Node server listening on port ${PORT}!`));
