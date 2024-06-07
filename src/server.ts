@@ -48,3 +48,5 @@ app.get("/movies", (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Node server listening on port ${PORT}!`));
+
+module.exports = app;
