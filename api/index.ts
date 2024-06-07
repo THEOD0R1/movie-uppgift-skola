@@ -12,7 +12,7 @@ const stripe = new Stripe(API_KEY);
 
 const PORT = 3000;
 
-app.use(cors(), express.static("public"), express.json());
+app.use(cors({ origin: "*" }), express.static("public"), express.json());
 
 const calculateOrderAmount = (items: any) => {
   let totalPrice: number = 0;
