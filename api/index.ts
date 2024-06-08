@@ -2,8 +2,8 @@ import Stripe from "stripe";
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-// import * as movieData from "./data/data.json";
-const data = require("./data/data.json");
+import { IMovie } from "./models/IMovie";
+const data = require("./data/data.json") as IMovie[];
 dotenv.config();
 
 const app = express();
@@ -45,6 +45,18 @@ app.post("/create-payment-intent", async (req, res) => {
 
 app.get("/movies", (req, res) => {
   res.send(JSON.stringify(data));
+});
+
+app.get("/movie/:movie_id", (req, res) => {
+  const movie_id = req.params.movie_id;
+
+  const index = data.findIndex((d) => d.imdbID === movie_id);
+
+  if (index === -1) {
+    return res.send("Find no movie with id: " + movie_id);
+  }
+
+  res.send(JSON.stringify(data[index]));
 });
 
 app.listen(PORT, () => console.log(`Node server listening on port ${PORT}!`));
