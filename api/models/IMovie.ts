@@ -5,4 +5,5 @@ export interface IMovie {
   Description: string;
   Poster: string;
   Price: number;
+  Amount: number;
 }

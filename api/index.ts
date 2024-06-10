@@ -14,11 +14,11 @@ const PORT = 3000;
 
 app.use(cors({ origin: "*" }), express.static("public"), express.json());
 
-const calculateOrderAmount = (items: any) => {
+const calculateOrderAmount = (items: IMovie[]) => {
   let totalPrice: number = 0;
 
   for (let i = 0; i < items.length; i++) {
-    totalPrice = totalPrice + items[i].price * items[i].amount;
+    totalPrice = totalPrice + items[i].Price * items[i].Amount;
   }
   return totalPrice * 100;
 };
