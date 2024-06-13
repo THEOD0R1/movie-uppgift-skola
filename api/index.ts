@@ -50,7 +50,7 @@ app.get("/movies", (req, res) => {
 
 app.get("/movies/page/:page_number?", (req, res) => {
   const page_number = req.params.page_number || 1;
-  const pageSize = 7;
+  const pageSize = 6;
 
   const totalPages = Math.ceil(data.length / pageSize);
 
@@ -62,7 +62,7 @@ app.get("/movies/page/:page_number?", (req, res) => {
   const pagedData = data.slice(startIndex, stopIndex);
 
   if (pagedData.length === 0) {
-    throw new Error(errorMessage);
+    res.send(errorMessage);
   }
   const sendData: IPagedMovies = { movies: pagedData, totalPages: totalPages };
   console.log(sendData);
