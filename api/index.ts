@@ -3,6 +3,7 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import { IMovie } from "./models/IMovie";
+import { IPagedMovies } from "./models/IPagedMovies";
 const data = require("./data/data.json") as IMovie[];
 dotenv.config();
 
@@ -18,7 +19,7 @@ const calculateOrderAmount = (items: IMovie[]) => {
   let totalPrice: number = 0;
 
   for (let i = 0; i < items.length; i++) {
-    totalPrice = totalPrice + items[i].Price * items[i].Amount;
+    totalPrice = totalPrice + items[i].price * items[i].amount;
   }
   return totalPrice * 100;
 };
@@ -45,6 +46,27 @@ app.post("/create-payment-intent", async (req, res) => {
 
 app.get("/movies", (req, res) => {
   res.send(JSON.stringify(data));
+});
+
+app.get("/movies/page/:page_number?", (req, res) => {
+  const page_number = req.params.page_number || 1;
+  const pageSize = 7;
+
+  const totalPages = Math.ceil(data.length / pageSize);
+
+  const errorMessage = "Did not found page number";
+
+  const startIndex = +page_number * pageSize - pageSize;
+  const stopIndex = +page_number * pageSize;
+
+  const pagedData = data.slice(startIndex, stopIndex);
+
+  if (pagedData.length === 0) {
+    throw new Error(errorMessage);
+  }
+  const sendData: IPagedMovies = { movies: pagedData, totalPages: totalPages };
+  console.log(sendData);
+  res.send(JSON.stringify(sendData));
 });
 
 app.get("/movie/:movie_id", (req, res) => {
